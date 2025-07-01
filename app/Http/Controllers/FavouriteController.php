@@ -27,10 +27,13 @@ class FavouriteController extends Controller
         ]);
     }
 
-    public function destory($favourite_id)
+    public function destroy($favourite_id)
     {
         if (auth()->user()->hasFavourite($favourite_id)) {
-            return 'yes';
+            auth()->user()->favourites()->detach($favourite_id);
+
+            return response()->json(['success' => true]);
         }
+        return response()->json(['success' => false, 'message' => 'favourite does not exist in this user']);
     }
 }
